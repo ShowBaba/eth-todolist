@@ -18,6 +18,13 @@ contract TodoList {
   // creaate a state variable
   mapping(uint => Task) public tasks;  // has a dataType of mapping
 
+  // create an eevnt to broadcast an action
+  event TaskCreated(
+    uint id,
+    string content,
+    bool completed
+  );
+
   // add a constructor to create a new task everytime the contract is caled
   constructor() public {
     // add a default task
@@ -31,5 +38,9 @@ contract TodoList {
 
     // put task in the task mapping
     tasks[taskCount] = Task(taskCount, _content, false);
+
+    // broadcast an event that the task was created
+    // call the event created above
+    emit TaskCreated(taskCount, _content, false);
   }
 }

@@ -30,6 +30,9 @@ App = {
     }
     // Modern dapp browsers...
     if (window.ethereum) {
+      // select an account manually from the blockchain
+      web3.eth.defaultAccount = ethereum._state.accounts[0]
+      // console.log(ethereum._state.accounts[0])
       window.web3 = new Web3(ethereum);
       try {
         // Request account access if needed
@@ -108,6 +111,16 @@ App = {
 
     // Update loading state
     App.setLoading(false);
+  },
+
+  createTask: async () => {
+    App.setLoading(true);
+
+    const content = $("#newTask").val();
+    // update the blockchain
+    console.log(App.todoList);
+    const response = await App.todoList.createTask(content);
+    window.location.reload();
   },
 
   renderTasks: async () => {
