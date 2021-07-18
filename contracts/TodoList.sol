@@ -15,13 +15,19 @@ contract TodoList {
   }
 
   // put tasks in stotrage on the blockchain
-  // creaate a state variable
+  // create a state variable
   mapping(uint => Task) public tasks;  // has a dataType of mapping
 
-  // create an eevnt to broadcast an action
+  // create an event to broadcast an action
   event TaskCreated(
     uint id,
     string content,
+    bool completed
+  );
+
+  // task completed event
+  event TaskCompleted(
+    uint id,
     bool completed
   );
 
@@ -42,5 +48,18 @@ contract TodoList {
     // broadcast an event that the task was created
     // call the event created above
     emit TaskCreated(taskCount, _content, false);
+  }
+
+  // complete task function
+  function toggleCompleted(uint _id) public {  // underscore = local variable
+    // read the task by id
+    Task memory _task = tasks[_id];  // variable is decleared with the Task type in memory;
+    // update completed property
+    _task.completed = !_task.completed;
+    // put it back in the mapping
+    tasks[_id] = _task;   
+
+    // trigger TaskCompleted event
+    emit TaskCompleted(_id, _task.completed);
   }
 }

@@ -31,7 +31,7 @@ App = {
     // Modern dapp browsers...
     if (window.ethereum) {
       // select an account manually from the blockchain
-      web3.eth.defaultAccount = ethereum._state.accounts[0]
+      web3.eth.defaultAccount = ethereum._state.accounts[0];
       // console.log(ethereum._state.accounts[0])
       window.web3 = new Web3(ethereum);
       try {
@@ -123,6 +123,14 @@ App = {
     window.location.reload();
   },
 
+  toggleCompleted: async (e) => {
+    App.setLoading(true);
+    // add an event listener
+    const taskId = e.target.name;
+    await App.todoList.toggleCompleted(taskId);
+    window.location.reload();
+  },
+
   renderTasks: async () => {
     // Load the total task count from the blockchain
     const taskCount = await App.todoList.taskCount();
@@ -142,8 +150,8 @@ App = {
       $newTaskTemplate
         .find("input")
         .prop("name", taskId)
-        .prop("checked", taskCompleted);
-      // .on('click', App.toggleCompleted)
+        .prop("checked", taskCompleted)
+        .on("click", App.toggleCompleted);
 
       // Put the task in the correct list
       if (taskCompleted) {
